@@ -21,7 +21,7 @@ canvas {
 }
 
 .container {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -96,7 +96,10 @@ button:hover {
 
 <script>
 /* ================= 365 MOTD + JOKES (CURATED) ================= */
-
+window.addEventListener("resize", () => {
+  document.querySelector(".container").style.top = "50%";
+});
+  
 const motdBase = [
   "Welcome to Pixel Client",
   "Stay sharp and play hard",
