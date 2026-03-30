@@ -14,7 +14,7 @@ body {
   overflow: hidden;
 }
 
-/* Canvas */
+/* Canvas background */
 canvas {
   position: fixed;
   top: 0;
@@ -22,211 +22,264 @@ canvas {
   z-index: 0;
 }
 
-/* LOGIN SCREEN */
-#loginScreen {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  background: rgba(2,6,23,0.9);
-}
-
-.loginBox {
-  text-align: center;
-  padding: 40px;
-  width: 320px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-
-  box-shadow:
-    0 0 10px #00c6ff,
-    0 0 30px rgba(0,150,255,0.5);
-}
-
-.loginBox h2 {
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px #00c6ff;
-}
-
-input {
-  width: 90%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 10px;
-  background: #111827;
-  color: white;
-  outline: none;
-
-  box-shadow: 0 0 10px rgba(0,150,255,0.3);
-}
-
-.loginBtn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
-
-  box-shadow:
-    0 0 10px #00c6ff,
-    0 0 20px #0072ff;
-}
-
-.loginBtn:hover {
-  transform: scale(1.05);
-}
-
-/* MAIN LAUNCHER */
+/* MAIN PANEL */
 .container {
   position: relative;
   z-index: 2;
-  text-align: center;
-  padding: 40px;
-  width: 340px;
+  width: 380px;
   margin: auto;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255,255,255,0.05);
+  padding: 30px;
   border-radius: 20px;
+  background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
-
-  box-shadow:
-    0 0 10px #00c6ff,
-    0 0 30px rgba(0,150,255,0.5);
-  display: none;
+  box-shadow: 0 0 25px #00c6ff;
+  text-align: center;
 }
 
 h1 {
   text-shadow: 0 0 10px #00c6ff;
 }
 
+/* BUTTONS */
 button {
-  width: 280px;
-  padding: 14px;
-  margin: 12px auto;
+  width: 90%;
+  padding: 12px;
+  margin: 10px auto;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   color: white;
   background: linear-gradient(45deg, #00c6ff, #0072ff);
-
-  box-shadow: 0 0 15px #00c6ff;
+  box-shadow: 0 0 10px #00c6ff;
 }
 
 button:hover {
-  transform: scale(1.07);
+  transform: scale(1.05);
 }
 
-/* LOADING */
-#loadingScreen {
+/* VERSION ICONS */
+.versionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  background: #00c6ff;
+  border-radius: 4px;
+  box-shadow: 0 0 8px #00c6ff;
+}
+
+/* MOTD */
+.motd {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* FULLSCREEN BUTTON */
+.fullscreen {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.5);
+  cursor: pointer;
+  box-shadow: 0 0 10px #00c6ff;
+}
+
+/* CHLOG + WELCOME */
+#popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
   display: none;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  z-index: 4;
-  background: #020617;
+  z-index: 10;
 }
 
-.bar {
+.popupBox {
+  width: 350px;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00c6ff;
+}
+
+.popupBox h2 {
+  text-align: center;
+}
+
+.popupBox p {
+  font-size: 14px;
+}
+
+/* LOGIN */
+#login {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,6,23,0.95);
+  z-index: 6;
+}
+
+.loginBox {
   width: 300px;
-  height: 20px;
-  background: #111827;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 15px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 20px #00c6ff;
 }
 
-.progress {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #111827;
+  color: white;
 }
 </style>
 </head>
 
 <body>
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
+<div style="
+position:fixed;
+bottom:15px;
+left:15px;
+z-index:5;
+background:rgba(0,0,0,0.6);
+padding:10px;
+border-radius:10px;
+box-shadow:0 0 10px #00c6ff;">
+  🔊 <input type="range" min="0" max="1" step="0.01" value="0.5" id="volume">
+</div>
 <canvas id="bg"></canvas>
 
+<!-- FULLSCREEN -->
+<div class="fullscreen" onclick="toggleFullscreen()">⛶</div>
+
 <!-- LOGIN -->
-<div id="loginScreen">
+<div id="login">
   <div class="loginBox">
     <h2>Login</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button class="loginBtn" onclick="login()">Login</button>
+    <input id="user" placeholder="Username">
+    <button onclick="login()">Enter</button>
   </div>
 </div>
 
-<!-- MAIN LAUNCHER -->
-<div class="container" id="launcher">
+<!-- MAIN -->
+<div class="container" id="main" style="display:none;">
   <h1>🎮 Pixel Client</h1>
 
-  <button onclick="launch('PixelClient_1.8.8.html')">
-    ▶ Play 1.8.8 Client
+  <div class="motd" id="motd"></div>
+
+  <button class="versionBtn" onclick="launch('PixelClient_1.8.8.html')">
+    <div class="icon"></div> Play 1.8.8
   </button>
 
-  <button onclick="launch('PixelClient_1.12.2.html')">
-    ▶ Play 1.12.2 Client
+  <button class="versionBtn" onclick="launch('PixelClient_1.12.2.html')">
+    <div class="icon"></div> Play 1.12.2
   </button>
 </div>
 
-<!-- LOADING -->
-<div id="loadingScreen">
-  <h2>Loading...</h2>
-  <div class="bar">
-    <div class="progress" id="progressBar"></div>
+<!-- POPUPS -->
+<div id="popup">
+  <div class="popupBox">
+    <h2 id="popupTitle"></h2>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">Close</button>
   </div>
 </div>
 
 <script>
-/* ===== FAKE LOGIN ===== */
+/* ===== ACCOUNT SAVE ===== */
 function login() {
-  const user = document.getElementById("username").value;
+  const name = document.getElementById("user").value;
+  if (!name) return;
 
-  if (!user) {
-    alert("Enter a username!");
-    return;
+  localStorage.setItem("username", name);
+  document.getElementById("login").style.display = "none";
+
+  document.getElementById("main").style.display = "block";
+
+  showWelcome();
+  loadMOTD();
+}
+
+/* ===== WELCOME / CHLOG ===== */
+function showWelcome() {
+  if (!localStorage.getItem("seen")) {
+    openPopup("Welcome!", "Thanks for using Pixel Client!");
+    localStorage.setItem("seen", "true");
+  } else {
+    openPopup("Changelog", "- Added launcher\n- UI improvements\n- Performance fixes");
   }
+}
+const music = document.getElementById("bgMusic");
+const volume = document.getElementById("volume");
 
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("launcher").style.display = "block";
+music.volume = 0.5;
+
+// Start music after user interaction (browser requirement)
+document.body.addEventListener("click", () => {
+  music.play().catch(() => {});
+}, { once: true });
+
+volume.addEventListener("input", () => {
+  music.volume = volume.value;
+});
+  
+function openPopup(title, text) {
+  document.getElementById("popupTitle").innerText = title;
+  document.getElementById("popupText").innerText = text;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+/* ===== MOTD ===== */
+function loadMOTD() {
+  const messages = [
+    "🔥 New update available!",
+    "🎮 Have fun playing!",
+    "⚡ Optimized performance!",
+    "🌌 Enjoy the neon launcher!"
+  ];
+  document.getElementById("motd").innerText =
+    "💬 " + messages[Math.floor(Math.random() * messages.length)];
+}
+
+/* ===== FULLSCREEN ===== */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
 }
 
 /* ===== LAUNCH ===== */
 function launch(file) {
-  const screen = document.getElementById("loadingScreen");
-  const bar = document.getElementById("progressBar");
-
-  screen.style.display = "flex";
-
-  let progress = 0;
-
-  let interval = setInterval(() => {
-    progress += Math.random() * 10;
-
-    if (progress > 100) progress = 100;
-
-    bar.style.width = progress + "%";
-
-    if (progress === 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        window.location.href = file;
-      }, 400);
-    }
-  }, 100);
+  window.location.href = file;
 }
 
 /* ===== PARTICLES ===== */
@@ -238,13 +291,13 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 
-for (let i = 0; i < 80; i++) {
+for (let i = 0; i < 60; i++) {
   particles.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     vx: (Math.random() - 0.5),
     vy: (Math.random() - 0.5),
-    size: Math.random() * 2 + 1
+    size: Math.random() * 2
   });
 }
 
