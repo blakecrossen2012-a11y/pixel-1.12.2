@@ -14,261 +14,144 @@ body {
   overflow: hidden;
 }
 
-/* Canvas background */
 canvas {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 0;
 }
 
-/* MAIN PANEL */
 .container {
-  position: relative;
-  z-index: 2;
-  width: 380px;
-  margin: auto;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 380px;
   padding: 30px;
   border-radius: 20px;
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
   box-shadow: 0 0 25px #00c6ff;
   text-align: center;
+  z-index: 2;
 }
 
 h1 {
   text-shadow: 0 0 10px #00c6ff;
 }
 
-/* BUTTONS */
 button {
-  width: 90%;
-  padding: 12px;
-  margin: 10px auto;
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   color: white;
   background: linear-gradient(45deg, #00c6ff, #0072ff);
-  box-shadow: 0 0 10px #00c6ff;
+  box-shadow: 0 0 12px #00c6ff;
 }
 
 button:hover {
   transform: scale(1.05);
 }
 
-/* VERSION ICONS */
-.versionBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  background: #00c6ff;
-  border-radius: 4px;
-  box-shadow: 0 0 8px #00c6ff;
-}
-
-/* MOTD */
 .motd {
-  margin-top: 10px;
+  margin: 10px 0;
   font-size: 13px;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* FULLSCREEN BUTTON */
 .fullscreen {
   position: fixed;
   top: 10px;
   right: 10px;
-  z-index: 5;
   padding: 8px 12px;
-  border-radius: 8px;
   background: rgba(0,0,0,0.5);
+  border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 0 10px #00c6ff;
-}
-
-/* CHLOG + WELCOME */
-#popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.popupBox {
-  width: 350px;
-  padding: 20px;
-  background: #0f172a;
-  border-radius: 15px;
-  box-shadow: 0 0 20px #00c6ff;
-}
-
-.popupBox h2 {
-  text-align: center;
-}
-
-.popupBox p {
-  font-size: 14px;
-}
-
-/* LOGIN */
-#login {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(2,6,23,0.95);
-  z-index: 6;
-}
-
-.loginBox {
-  width: 300px;
-  padding: 30px;
-  text-align: center;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 20px #00c6ff;
-}
-
-input {
-  width: 90%;
-  padding: 10px;
-  margin: 8px;
-  border-radius: 8px;
-  border: none;
-  background: #111827;
-  color: white;
 }
 </style>
 </head>
 
 <body>
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
 
-<div style="
-position:fixed;
-bottom:15px;
-left:15px;
-z-index:5;
-background:rgba(0,0,0,0.6);
-padding:10px;
-border-radius:10px;
-box-shadow:0 0 10px #00c6ff;">
-  🔊 <input type="range" min="0" max="1" step="0.01" value="0.5" id="volume">
-</div>
 <canvas id="bg"></canvas>
 
-<!-- FULLSCREEN -->
 <div class="fullscreen" onclick="toggleFullscreen()">⛶</div>
 
-<!-- LOGIN -->
-<div id="login">
-  <div class="loginBox">
-    <h2>Login</h2>
-    <input id="user" placeholder="Username">
-    <button onclick="login()">Enter</button>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div class="container" id="main" style="display:none;">
+<div class="container">
   <h1>🎮 Pixel Client</h1>
 
   <div class="motd" id="motd"></div>
 
-  <button class="versionBtn" onclick="launch('PixelClient_1.8.8.html')">
-    <div class="icon"></div> Play 1.8.8
+  <button onclick="launch('PixelClient_1.8.8.html')">
+    ▶ Play 1.8.8
   </button>
 
-  <button class="versionBtn" onclick="launch('PixelClient_1.12.2.html')">
-    <div class="icon"></div> Play 1.12.2
+  <button onclick="launch('PixelClient_1.12.2.html')">
+    ▶ Play 1.12.2
   </button>
-</div>
-
-<!-- POPUPS -->
-<div id="popup">
-  <div class="popupBox">
-    <h2 id="popupTitle"></h2>
-    <p id="popupText"></p>
-    <button onclick="closePopup()">Close</button>
-  </div>
 </div>
 
 <script>
-/* ===== ACCOUNT SAVE ===== */
-function login() {
-  const name = document.getElementById("user").value;
-  if (!name) return;
+/* ================= 365 MOTD + JOKES (CURATED) ================= */
 
-  localStorage.setItem("username", name);
-  document.getElementById("login").style.display = "none";
+const motdBase = [
+  "Welcome to Pixel Client",
+  "Stay sharp and play hard",
+  "Today is a perfect day to game",
+  "Pixel power activated",
+  "Grinding never felt so good",
+  "Keep your aim steady",
+  "Rise and dominate",
+  "Lag? Not here",
+  "Time to build something great",
+  "Game smarter, not harder"
+];
 
-  document.getElementById("main").style.display = "block";
+const jokes = [
+  "Why did the creeper go to therapy? 💥",
+  "I tried to mine... ended up mining my patience 😂",
+  "Why don’t skeletons lie? They’d fall apart 💀",
+  "What’s a zombie’s favorite food? Brain-freeze 🧠",
+  "Why was the player broke? Too many diamonds lost 💎",
+  "Lag is just part of the adventure 😅",
+  "I fell in lava… again 🔥",
+  "That moment when you miss a jump 😭",
+  "Villagers are secretly rich 🏡",
+  "Never trust gravel… EVER 😤"
+];
 
-  showWelcome();
-  loadMOTD();
+/* Generate 365 unique combinations */
+let daily = [];
+
+for (let i = 0; i < 365; i++) {
+  const m = motdBase[i % motdBase.length];
+  const j = jokes[i % jokes.length];
+
+  daily.push(`💬 Day ${i+1}: ${m} | 😆 ${j}`);
 }
 
-/* ===== WELCOME / CHLOG ===== */
-function showWelcome() {
-  if (!localStorage.getItem("seen")) {
-    openPopup("Welcome!", "Thanks for using Pixel Client!");
-    localStorage.setItem("seen", "true");
-  } else {
-    openPopup("Changelog", "- Added launcher\n- UI improvements\n- Performance fixes");
-  }
-}
-const music = document.getElementById("bgMusic");
-const volume = document.getElementById("volume");
-
-music.volume = 0.5;
-
-// Start music after user interaction (browser requirement)
-document.body.addEventListener("click", () => {
-  music.play().catch(() => {});
-}, { once: true });
-
-volume.addEventListener("input", () => {
-  music.volume = volume.value;
-});
-  
-function openPopup(title, text) {
-  document.getElementById("popupTitle").innerText = title;
-  document.getElementById("popupText").innerText = text;
-  document.getElementById("popup").style.display = "flex";
+/* Deterministic daily selection */
+function getDayOfYear() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  return Math.floor((now - start) / 86400000);
 }
 
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-/* ===== MOTD ===== */
 function loadMOTD() {
-  const messages = [
-    "🔥 New update available!",
-    "🎮 Have fun playing!",
-    "⚡ Optimized performance!",
-    "🌌 Enjoy the neon launcher!"
-  ];
-  document.getElementById("motd").innerText =
-    "💬 " + messages[Math.floor(Math.random() * messages.length)];
+  const day = getDayOfYear();
+  const index = day % daily.length;
+  document.getElementById("motd").innerText = daily[index];
 }
 
-/* ===== FULLSCREEN ===== */
+/* ================= LAUNCH ================= */
+function launch(file) {
+  window.location.href = file;
+}
+
+/* ================= FULLSCREEN ================= */
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
@@ -277,12 +160,7 @@ function toggleFullscreen() {
   }
 }
 
-/* ===== LAUNCH ===== */
-function launch(file) {
-  window.location.href = file;
-}
-
-/* ===== PARTICLES ===== */
+/* ================= PARTICLES ================= */
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
@@ -323,6 +201,8 @@ function animate() {
 }
 
 animate();
+
+loadMOTD();
 </script>
 
 </body>
