@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Client Launcher</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #020617;
+  color: white;
+  overflow: hidden;
+}
+
+/* Canvas */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* LOGIN SCREEN */
+#loginScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  background: rgba(2,6,23,0.9);
+}
+
+.loginBox {
+  text-align: center;
+  padding: 40px;
+  width: 320px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 10px #00c6ff,
+    0 0 30px rgba(0,150,255,0.5);
+}
+
+.loginBox h2 {
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00c6ff;
+}
+
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  outline: none;
+
+  box-shadow: 0 0 10px rgba(0,150,255,0.3);
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+
+  box-shadow:
+    0 0 10px #00c6ff,
+    0 0 20px #0072ff;
+}
+
+.loginBtn:hover {
+  transform: scale(1.05);
+}
+
+/* MAIN LAUNCHER */
+.container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px;
+  width: 340px;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 10px #00c6ff,
+    0 0 30px rgba(0,150,255,0.5);
+  display: none;
+}
+
+h1 {
+  text-shadow: 0 0 10px #00c6ff;
+}
+
+button {
+  width: 280px;
+  padding: 14px;
+  margin: 12px auto;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+
+  box-shadow: 0 0 15px #00c6ff;
+}
+
+button:hover {
+  transform: scale(1.07);
+}
+
+/* LOADING */
+#loadingScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 4;
+  background: #020617;
+}
+
+.bar {
+  width: 300px;
+  height: 20px;
+  background: #111827;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="loginBox">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button class="loginBtn" onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- MAIN LAUNCHER -->
+<div class="container" id="launcher">
+  <h1>🎮 Pixel Client</h1>
+
+  <button onclick="launch('PixelClient_1.8.8.html')">
+    ▶ Play 1.8.8 Client
+  </button>
+
+  <button onclick="launch('PixelClient_1.12.2.html')">
+    ▶ Play 1.12.2 Client
+  </button>
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+  <h2>Loading...</h2>
+  <div class="bar">
+    <div class="progress" id="progressBar"></div>
+  </div>
+</div>
+
+<script>
+/* ===== FAKE LOGIN ===== */
+function login() {
+  const user = document.getElementById("username").value;
+
+  if (!user) {
+    alert("Enter a username!");
+    return;
+  }
+
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("launcher").style.display = "block";
+}
+
+/* ===== LAUNCH ===== */
+function launch(file) {
+  const screen = document.getElementById("loadingScreen");
+  const bar = document.getElementById("progressBar");
+
+  screen.style.display = "flex";
+
+  let progress = 0;
+
+  let interval = setInterval(() => {
+    progress += Math.random() * 10;
+
+    if (progress > 100) progress = 100;
+
+    bar.style.width = progress + "%";
+
+    if (progress === 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        window.location.href = file;
+      }, 400);
+    }
+  }, 100);
+}
+
+/* ===== PARTICLES ===== */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5),
+    vy: (Math.random() - 0.5),
+    size: Math.random() * 2 + 1
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = "#00c6ff";
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "#00c6ff";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
